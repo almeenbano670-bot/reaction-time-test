@@ -1,1 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <title>Visual Memory Test | Psychology & Neuroscience Tool</title>
+  <meta name="description" content="Free visual memory test used in psychology and neuroscience to measure short-term visual working memory. Progressive difficulty with instant feedback." />
+  <link rel="canonical" href="https://almeenbano670-bot.github.io/reaction-time-test/visual-memory-test/" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f7fb;
+      margin: 0;
+      padding: 0;
+    }
+    .wrap {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 1px 6px rgba(0,0,0,.1);
+    }
+    h1 { margin-top: 0; }
+    .muted { color: #444; line-height: 1.5; }
+
+    .info {
+      margin: 10px 0;
+      font-weight: bold;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .cell {
+      height: 120px;
+      background: #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .cell.active {
+      background: #4caf50;
+    }
+
+    .cell.wrong {
+      background: #e53935;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background: #000;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #777;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Visual Memory Test</h1>
+
+      <p class="muted">
+        Visual memory is a core component of cognitive processing studied in psychology and neuroscience.
+        This test measures how well you can remember visual patterns over short periods of time.
+      </p>
+
+      <p class="muted">
+        Watch the highlighted squares carefully, then click the same squares in any order.
+        Each level adds one more square to remember.
+      </p>
+
+      <div class="info">
+        Level: <span id="level">1</span>
+      </div>
+
+      <button id="startBtn">Start Test</button>
+
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+
+  <script>
+    const grid = document.getElementById("grid");
+    const startBtn = document.getElementById("startBtn");
+    const levelEl = document.getElementById("level");
+
+    let level = 1;
+    let sequence = [];
+    let userClicks = [];
+    let acceptingInput = false;
+
+    function createGrid() {
+      grid.innerHTML = "";
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.dataset.index = i;
+        cell.onclick = () => handleClick(i, cell);
+        grid.appendChild(cell);
+      }
+    }
+
+    function generateSequence() {
+      sequence = [];
+      while (sequence.length < level) {
+        const rand = Math.floor(Math.random() * 9);
+        if (!sequence.includes(rand)) {
+          sequence.push(rand);
+        }
+      }
+    }
+
+    function showSequence() {
+      const cells = document.querySelectorAll(".cell");
+      let i = 0;
+      acceptingInput = false;
+
+      const interval = setInterval(() => {
+        if (i > 0) {
+          cells[sequence[i - 1]].classList.remove("active");
+        }
+        if (i === sequence.length) {
+          clearInterval(interval);
+          acceptingInput = true;
+          return;
+        }
+        cells[sequence[i]].classList.add("active");
+        i++;
+      }, 700);
+    }
+
+    function handleClick(index, cell) {
+      if (!acceptingInput) return;
+
+      if (!sequence.includes(index)) {
+        cell.classList.add("wrong");
+        setTimeout(() => alert("Wrong square. Test over. You reached level " + level), 100);
+        resetTest();
+        return;
+      }
+
+      if (!userClicks.includes(index)) {
+        userClicks.push(index);
+      }
+
+      if (userClicks.length === sequence.length) {
+        level++;
+        levelEl.textContent = level;
+        startRound();
+      }
+    }
+
+    function startRound() {
+      userClicks = [];
+      generateSequence();
+      setTimeout(showSequence, 500);
+    }
+
+    function resetTest() {
+      level = 1;
+      levelEl.textContent = level;
+      acceptingInput = false;
+    }
+
+    startBtn.onclick = () => {
+      resetTest();
+      startRound();
+    };
+
+    createGrid();
+  </script>
+</body>
+</html>
