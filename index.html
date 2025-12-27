@@ -3,12 +3,25 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Reaction Time Test (Online) — Measure Your Speed</title>
-  <meta name="description" content="Free online reaction time test. Click when the color changes to measure your reaction speed in milliseconds. See averages and tips to improve." />
+
+  <!-- SEO -->
+  <title>Reaction Time Test | Psychology & Neuroscience Tool</title>
+  <meta name="description" content="Free reaction time test used in psychology and neuroscience to measure attention, focus, and response speed in milliseconds. Instant results." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://almeenbano670-bot.github.io/reaction-time-test/" />
+
+  <!-- Social preview (optional but good) -->
+  <meta property="og:title" content="Reaction Time Test | Psychology & Neuroscience Tool" />
+  <meta property="og:description" content="Measure your response speed in milliseconds. A simple cognitive tool used in psychology and neuroscience." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://almeenbano670-bot.github.io/reaction-time-test/" />
+
   <style>
+    :root { color-scheme: light; }
     body { font-family: Arial, sans-serif; margin: 0; background:#f6f7fb; color:#111; }
     .wrap { max-width: 900px; margin: auto; padding: 20px; }
     .card { background:#fff; padding: 20px; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,.1); }
+    .muted { color:#444; line-height: 1.55; }
     .box {
       height: 300px;
       background: #ccc;
@@ -22,6 +35,7 @@
       border-radius: 12px;
       margin-top: 20px;
     }
+    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:12px; }
     button {
       padding: 10px 16px;
       border: none;
@@ -31,32 +45,110 @@
       font-size: 16px;
       cursor: pointer;
     }
-    button:disabled { background: #777; }
+    button:disabled { background: #777; cursor:not-allowed; }
+    .stats { margin-top: 12px; font-size: 15px; }
+    .pill {
+      display:inline-block; padding:6px 10px; border-radius:999px; background:#eef0f6;
+      margin-right:8px; margin-top:6px;
+    }
+    .small { font-size: 13px; }
+    .hr { height:1px; background:#e8e9ee; margin:18px 0; }
+    a { color:#111; }
   </style>
+
+  <!-- Structured data (helps Google understand the page) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Reaction Time Test (Psychology & Neuroscience Tool)",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Any",
+    "url": "https://almeenbano670-bot.github.io/reaction-time-test/",
+    "description": "Free reaction time test used in psychology and neuroscience to measure attention, focus, and response speed in milliseconds.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
 </head>
 
 <body>
   <div class="wrap">
     <div class="card">
       <h1>Reaction Time Test</h1>
-      <p>Click the box as soon as it turns <b>green</b>.</p>
 
-      <button id="startBtn">Start Test</button>
+      <!-- SEO text (visible content for Google + users) -->
+      <p class="muted">
+        Reaction time is a core cognitive metric used in psychology and neuroscience to evaluate how quickly the brain responds to visual stimuli.
+        This free test measures your response speed in milliseconds and gives an instant result.
+      </p>
+      <p class="muted small">
+        How it works: click <b>Start Test</b>, wait for the box to turn <b>green</b>, then click as fast as you can.
+        Clicking too early will show <b>Too Soon</b>.
+      </p>
 
-      <div id="testBox" class="box">Click Start</div>
+      <div class="row">
+        <button id="startBtn">Start Test</button>
+        <button id="resetBtn" type="button">Reset Stats</button>
+      </div>
 
-      <p id="result"></p>
+      <div id="testBox" class="box" aria-live="polite">Click Start</div>
+
+      <div class="stats" id="result"></div>
+      <div class="stats" id="stats"></div>
+
+      <div class="hr"></div>
+
+      <h2 style="margin:0 0 8px 0;">Tips to improve reaction time</h2>
+      <ul class="muted small" style="margin-top:0;">
+        <li>Sleep and fatigue strongly affect response speed.</li>
+        <li>Do 5–10 trials, then use the <b>average</b>, not a single best score.</li>
+        <li>Try again at the same time of day for consistent comparisons.</li>
+      </ul>
+
+      <p class="muted small">
+        Live site: <a href="https://almeenbano670-bot.github.io/reaction-time-test/">https://almeenbano670-bot.github.io/reaction-time-test/</a>
+      </p>
     </div>
   </div>
 
   <script>
     const startBtn = document.getElementById("startBtn");
+    const resetBtn = document.getElementById("resetBtn");
     const testBox = document.getElementById("testBox");
     const result = document.getElementById("result");
+    const statsEl = document.getElementById("stats");
 
-    let startTime;
+    let startTime = 0;
     let waiting = false;
-    let timer;
+    let timer = null;
+    let trials = []; // stores ms
+
+    function renderStats() {
+      if (trials.length === 0) {
+        statsEl.innerHTML = '<span class="pill">Trials: 0</span><span class="pill">Average: —</span><span class="pill">Best: —</span>';
+        return;
+      }
+      const sum = trials.reduce((a,b)=>a+b,0);
+      const avg = Math.round(sum / trials.length);
+      const best = Math.round(Math.min(...trials));
+      const last = Math.round(trials[trials.length - 1]);
+
+      statsEl.innerHTML = `
+        <span class="pill">Trials: ${trials.length}</span>
+        <span class="pill">Last: ${last} ms</span>
+        <span class="pill">Average: ${avg} ms</span>
+        <span class="pill">Best: ${best} ms</span>
+      `;
+    }
+
+    function resetToIdle() {
+      clearTimeout(timer);
+      timer = null;
+      waiting = false;
+      startBtn.disabled = false;
+      testBox.style.background = "#ccc";
+      testBox.textContent = "Click Start";
+    }
 
     startBtn.onclick = () => {
       result.textContent = "";
@@ -65,7 +157,7 @@
       startBtn.disabled = true;
       waiting = true;
 
-      const delay = Math.random() * 3000 + 1000;
+      const delay = Math.random() * 3000 + 1000; // 1–4 seconds
 
       timer = setTimeout(() => {
         testBox.style.background = "green";
@@ -77,8 +169,10 @@
     testBox.onclick = () => {
       if (!waiting) return;
 
+      // Clicked too soon (before green)
       if (testBox.style.background !== "green") {
         clearTimeout(timer);
+        timer = null;
         testBox.textContent = "Too Soon!";
         testBox.style.background = "red";
         startBtn.disabled = false;
@@ -87,10 +181,30 @@
       }
 
       const reactionTime = performance.now() - startTime;
-      result.textContent = "Your reaction time: " + Math.round(reactionTime) + " ms";
+      const ms = Math.round(reactionTime);
+
+      trials.push(ms);
+
+      result.textContent = "Your reaction time: " + ms + " ms";
       startBtn.disabled = false;
       waiting = false;
+
+      // Prepare for next round
+      testBox.style.background = "#ccc";
+      testBox.textContent = "Click Start";
+
+      renderStats();
     };
+
+    resetBtn.onclick = () => {
+      trials = [];
+      result.textContent = "";
+      renderStats();
+      resetToIdle();
+    };
+
+    // initial
+    renderStats();
   </script>
 </body>
 </html>
