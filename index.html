@@ -4,191 +4,469 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Visual Memory Test | Psychology & Neuroscience Tool</title>
-  <meta name="description" content="Free visual memory test used in psychology and neuroscience to measure short-term visual working memory. Progressive difficulty with instant feedback." />
-  <link rel="canonical" href="https://almeenbano670-bot.github.io/reaction-time-test/visual-memory-test/" />
+  <title>Reaction Time Test | Free Psychology & Neuroscience Tool</title>
+  <meta name="description" content="Free reaction time test to measure your response speed. Simple, fast, mobile-friendly. Also includes a Visual Memory Test." />
+  <link rel="canonical" href="https://almeenbano670-bot.github.io/reaction-time-test/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Reaction Time Test | Free Psychology & Neuroscience Tool" />
+  <meta property="og:description" content="Measure your response speed in milliseconds. Try the Visual Memory Test too." />
+  <meta property="og:url" content="https://almeenbano670-bot.github.io/reaction-time-test/" />
+  <meta property="og:type" content="website" />
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f6f7fb;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --btn:#111827;
+      --btnText:#ffffff;
+      --good:#16a34a;
+      --warn:#f59e0b;
+      --bad:#dc2626;
+      --shadow: 0 12px 30px rgba(0,0,0,.08);
+      --radius: 18px;
     }
-    .wrap {
-      max-width: 800px;
-      margin: auto;
-      padding: 20px;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.5;
     }
-    .card {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 1px 6px rgba(0,0,0,.1);
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 16px 60px;
     }
-    h1 { margin-top: 0; }
-    .muted { color: #444; line-height: 1.5; }
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 18px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .dot{
+      width:12px;height:12px;border-radius:999px;background:#111827;
+      box-shadow: 16px 0 0 #9ca3af, 32px 0 0 #d1d5db;
+      margin-right:8px;
+    }
+    .toplinks{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      text-decoration:none;
+      font-weight:600;
+      box-shadow: 0 6px 16px rgba(0,0,0,.04);
+    }
+    .pill:focus{ outline: 3px solid rgba(17,24,39,.15); outline-offset: 2px; }
 
-    .info {
-      margin: 10px 0;
-      font-weight: bold;
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 16px;
+      margin-top: 12px;
+    }
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
     }
 
-    .grid {
-      display: grid;
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    h1{
+      margin: 4px 0 8px;
+      font-size: 34px;
+      letter-spacing: -.6px;
+    }
+    .sub{
+      color: var(--muted);
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+    .small{
+      color: var(--muted);
+      font-size: 13px;
+      margin: 10px 0 0;
+    }
+
+    .ctaRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    button, .btn{
+      appearance:none;
+      border:0;
+      cursor:pointer;
+      font-weight:700;
+      border-radius: 14px;
+      padding: 12px 16px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition: transform .06s ease, opacity .2s ease;
+    }
+    button:active, .btn:active{ transform: translateY(1px); }
+    button:focus, .btn:focus{ outline: 3px solid rgba(17,24,39,.15); outline-offset: 2px; }
+
+    .btnPrimary{
+      background: var(--btn);
+      color: var(--btnText);
+    }
+    .btnGhost{
+      background: transparent;
+      border:1px solid var(--border);
+      color: var(--text);
+    }
+
+    .testArea{
+      margin-top: 16px;
+      border-radius: var(--radius);
+      border:1px solid var(--border);
+      background: #0b1220;
+      overflow:hidden;
+    }
+    .stage{
+      height: 320px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding: 18px;
+      user-select:none;
+    }
+    .stageInner{
+      max-width: 520px;
+    }
+    .stageTitle{
+      font-size: 20px;
+      font-weight: 800;
+      color: #e5e7eb;
+      margin: 0 0 8px;
+    }
+    .stageText{
+      margin:0;
+      color:#cbd5e1;
+      font-size: 14px;
+    }
+    .kbd{
+      display:inline-block;
+      padding: 2px 8px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      color:#e5e7eb;
+      font-weight:700;
+      font-size: 12px;
+      margin: 0 3px;
+    }
+
+    .stats{
+      display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      margin-top: 20px;
+      margin-top: 12px;
+    }
+    @media (max-width: 520px){
+      .stats{ grid-template-columns: 1fr; }
+    }
+    .stat{
+      border:1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+    }
+    .statLabel{
+      color: var(--muted);
+      font-size: 12px;
+      margin: 0 0 6px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      text-transform: uppercase;
+    }
+    .statValue{
+      margin:0;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -.2px;
     }
 
-    .cell {
-      height: 120px;
-      background: #ccc;
-      border-radius: 8px;
-      cursor: pointer;
-      user-select: none;
+    .side h2{
+      margin: 6px 0 8px;
+      font-size: 18px;
+      letter-spacing: -.2px;
+    }
+    .list{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
     }
 
-    .cell.active {
-      background: #4caf50;
+    footer{
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
     }
 
-    .cell.wrong {
-      background: #e53935;
-    }
-
-    button {
-      margin-top: 15px;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 8px;
-      background: #000;
-      color: #fff;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      background: #777;
-      cursor: not-allowed;
-    }
+    /* Dynamic stage colors */
+    .state-idle{ background: #0b1220; }
+    .state-wait{ background: #111827; }
+    .state-go{ background: #0b3b1e; }
+    .state-tooSoon{ background: #4c0519; }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="card">
-      <h1>Visual Memory Test</h1>
-
-      <p class="muted">
-        Visual memory is a core component of cognitive processing studied in psychology and neuroscience.
-        This test measures how well you can remember visual patterns over short periods of time.
-      </p>
-
-      <p class="muted">
-        Watch the highlighted squares carefully, then click the same squares in any order.
-        Each level adds one more square to remember.
-      </p>
-
-      <div class="info">
-        Level: <span id="level">1</span>
+    <header>
+      <div class="brand" aria-label="Site brand">
+        <span class="dot" aria-hidden="true"></span>
+        Reaction-Time Tools
       </div>
 
-      <button id="startBtn">Start Test</button>
+      <nav class="toplinks" aria-label="Quick links">
+        <a class="pill" href="./visual-memory-test/" title="Open Visual Memory Test">
+          Visual Memory Test →
+        </a>
+      </nav>
+    </header>
 
-      <div class="grid" id="grid"></div>
+    <div class="grid">
+      <!-- Main: Reaction Time Test -->
+      <main class="card" aria-label="Reaction Time Test">
+        <h1>Reaction Time Test</h1>
+        <p class="sub">
+          Measure your response speed in <strong>milliseconds</strong>. Click start, wait for green, then click as fast as you can.
+          Keyboard supported: press <span class="kbd">Space</span> or <span class="kbd">Enter</span>.
+        </p>
+
+        <div class="ctaRow">
+          <button id="btnStart" class="btnPrimary" type="button">Start / Restart</button>
+          <button id="btnReset" class="btnGhost" type="button">Reset Scores</button>
+          <a class="btn btnGhost" href="./visual-memory-test/" aria-label="Go to Visual Memory Test">Visual Memory Test</a>
+        </div>
+
+        <div class="testArea" role="region" aria-label="Reaction stage">
+          <div id="stage" class="stage state-idle" tabindex="0" aria-label="Click area">
+            <div class="stageInner">
+              <p class="stageTitle" id="stageTitle">Press Start</p>
+              <p class="stageText" id="stageText">
+                Then wait… when it turns green, click (or press Space/Enter).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats" aria-label="Results">
+          <div class="stat">
+            <div class="statLabel">Last</div>
+            <p class="statValue" id="lastMs">—</p>
+          </div>
+          <div class="stat">
+            <div class="statLabel">Best</div>
+            <p class="statValue" id="bestMs">—</p>
+          </div>
+          <div class="stat">
+            <div class="statLabel">Average (this session)</div>
+            <p class="statValue" id="avgMs">—</p>
+          </div>
+        </div>
+
+        <p class="small">
+          Tip: Don’t “predict” the green. The delay is randomized to reduce cheating.
+        </p>
+
+        <footer>
+          Built on GitHub Pages. For Google indexing, keep this page public and avoid removing verification files.
+        </footer>
+      </main>
+
+      <!-- Side: Guidance / SEO / Next steps -->
+      <aside class="card side" aria-label="Next steps">
+        <h2>What to do next</h2>
+        <ul class="list">
+          <li><strong>Confirm both URLs work:</strong><br>
+            Home: <code>/reaction-time-test/</code><br>
+            Memory: <code>/reaction-time-test/visual-memory-test/</code>
+          </li>
+          <li><strong>Request indexing</strong> in Search Console (you already did).</li>
+          <li><strong>Add a README</strong> describing both tools (helps trust + SEO).</li>
+          <li><strong>Monetize later:</strong> once you have traffic, add affiliate links + display ads carefully.</li>
+        </ul>
+      </aside>
     </div>
   </div>
 
   <script>
-    const grid = document.getElementById("grid");
-    const startBtn = document.getElementById("startBtn");
-    const levelEl = document.getElementById("level");
+    // Reaction Time Test (self-contained, no external files)
+    const stage = document.getElementById("stage");
+    const stageTitle = document.getElementById("stageTitle");
+    const stageText = document.getElementById("stageText");
 
-    let level = 1;
-    let sequence = [];
-    let userClicks = [];
-    let acceptingInput = false;
+    const btnStart = document.getElementById("btnStart");
+    const btnReset = document.getElementById("btnReset");
 
-    function createGrid() {
-      grid.innerHTML = "";
-      for (let i = 0; i < 9; i++) {
-        const cell = document.createElement("div");
-        cell.className = "cell";
-        cell.dataset.index = i;
-        cell.onclick = () => handleClick(i, cell);
-        grid.appendChild(cell);
+    const lastMsEl = document.getElementById("lastMs");
+    const bestMsEl = document.getElementById("bestMs");
+    const avgMsEl = document.getElementById("avgMs");
+
+    let state = "idle"; // idle | wait | go | tooSoon
+    let goTime = null;
+    let waitTimer = null;
+
+    let sessionTimes = [];
+    let bestAllTime = null;
+
+    // Load best from localStorage (optional)
+    try {
+      const stored = localStorage.getItem("rt_best_ms");
+      if (stored) bestAllTime = Number(stored);
+    } catch (e) {}
+
+    function setStageClass(cls){
+      stage.className = "stage " + cls;
+    }
+
+    function updateStats(last){
+      if (typeof last === "number") {
+        lastMsEl.textContent = `${last} ms`;
+      }
+      if (typeof bestAllTime === "number") {
+        bestMsEl.textContent = `${bestAllTime} ms`;
+      } else {
+        bestMsEl.textContent = "—";
+      }
+      if (sessionTimes.length) {
+        const avg = Math.round(sessionTimes.reduce((a,b)=>a+b,0) / sessionTimes.length);
+        avgMsEl.textContent = `${avg} ms`;
+      } else {
+        avgMsEl.textContent = "—";
       }
     }
 
-    function generateSequence() {
-      sequence = [];
-      while (sequence.length < level) {
-        const rand = Math.floor(Math.random() * 9);
-        if (!sequence.includes(rand)) {
-          sequence.push(rand);
-        }
-      }
+    function resetToIdle(){
+      state = "idle";
+      goTime = null;
+      if (waitTimer) clearTimeout(waitTimer);
+      waitTimer = null;
+
+      setStageClass("state-idle");
+      stageTitle.textContent = "Press Start";
+      stageText.textContent = "Then wait… when it turns green, click (or press Space/Enter).";
+      stage.focus();
     }
 
-    function showSequence() {
-      const cells = document.querySelectorAll(".cell");
-      let i = 0;
-      acceptingInput = false;
+    function startWait(){
+      state = "wait";
+      goTime = null;
+      setStageClass("state-wait");
+      stageTitle.textContent = "Wait…";
+      stageText.textContent = "Do not click yet.";
 
-      const interval = setInterval(() => {
-        if (i > 0) {
-          cells[sequence[i - 1]].classList.remove("active");
-        }
-        if (i === sequence.length) {
-          clearInterval(interval);
-          acceptingInput = true;
-          return;
-        }
-        cells[sequence[i]].classList.add("active");
-        i++;
-      }, 700);
+      const delay = 1200 + Math.floor(Math.random() * 2800); // 1.2s–4.0s
+      waitTimer = setTimeout(() => {
+        state = "go";
+        goTime = performance.now();
+        setStageClass("state-go");
+        stageTitle.textContent = "GO!";
+        stageText.textContent = "Click now (or press Space/Enter).";
+      }, delay);
+      stage.focus();
     }
 
-    function handleClick(index, cell) {
-      if (!acceptingInput) return;
+    function registerAttempt(){
+      if (state === "wait") {
+        // too soon
+        state = "tooSoon";
+        if (waitTimer) clearTimeout(waitTimer);
+        waitTimer = null;
 
-      if (!sequence.includes(index)) {
-        cell.classList.add("wrong");
-        setTimeout(() => alert("Wrong square. Test over. You reached level " + level), 100);
-        resetTest();
+        setStageClass("state-tooSoon");
+        stageTitle.textContent = "Too soon";
+        stageText.textContent = "You clicked before green. Press Start to try again.";
         return;
       }
 
-      if (!userClicks.includes(index)) {
-        userClicks.push(index);
+      if (state === "go") {
+        const rt = Math.max(0, Math.round(performance.now() - goTime));
+        sessionTimes.push(rt);
+
+        if (bestAllTime === null || rt < bestAllTime) {
+          bestAllTime = rt;
+          try { localStorage.setItem("rt_best_ms", String(bestAllTime)); } catch (e) {}
+        }
+
+        updateStats(rt);
+
+        // Back to idle after result
+        state = "idle";
+        setStageClass("state-idle");
+        stageTitle.textContent = `Result: ${rt} ms`;
+        stageText.textContent = "Press Start to run another trial.";
+        return;
       }
 
-      if (userClicks.length === sequence.length) {
-        level++;
-        levelEl.textContent = level;
-        startRound();
+      // idle / tooSoon -> ignore; user should press Start
+    }
+
+    // Controls
+    btnStart.addEventListener("click", () => startWait());
+    btnReset.addEventListener("click", () => {
+      sessionTimes = [];
+      bestAllTime = null;
+      try { localStorage.removeItem("rt_best_ms"); } catch (e) {}
+      lastMsEl.textContent = "—";
+      updateStats();
+      resetToIdle();
+    });
+
+    // Stage click
+    stage.addEventListener("click", () => registerAttempt());
+
+    // Keyboard support
+    window.addEventListener("keydown", (e) => {
+      const k = e.key.toLowerCase();
+      if (k === " " || k === "enter") {
+        e.preventDefault();
+        // If idle/tooSoon, Space/Enter acts like Start; if wait/go, it registers attempt
+        if (state === "idle" || state === "tooSoon") startWait();
+        else registerAttempt();
       }
-    }
+    });
 
-    function startRound() {
-      userClicks = [];
-      generateSequence();
-      setTimeout(showSequence, 500);
-    }
-
-    function resetTest() {
-      level = 1;
-      levelEl.textContent = level;
-      acceptingInput = false;
-    }
-
-    startBtn.onclick = () => {
-      resetTest();
-      startRound();
-    };
-
-    createGrid();
+    // Init
+    updateStats();
+    resetToIdle();
   </script>
 </body>
 </html>
